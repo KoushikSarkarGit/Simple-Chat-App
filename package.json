@@ -1,0 +1,24 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/KoushikSarkarGit/Simple-Chat-App#readme",
+  "bugs": {
+    "url": "https://github.com/KoushikSarkarGit/Simple-Chat-App/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KoushikSarkarGit/Simple-Chat-App.git"
+  },
+  "license": "ISC",
+  "author": "koushik sarkar",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
