@@ -1,42 +1,60 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+  background-color: rgb(235, 235, 235);
+}
+
+#chat-container {
+  height: 72vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70vw;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+
+}
+
+#chat-form {
+  width: 70vw;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  padding: 1px;
+}
+
+#message-input {
+  width: 92%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.sendbtn {
+  padding: 10px;
+  margin-left: 5px;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.text-center {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.mitem {
+  padding: 4px;
+  border-radius: 5px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.left {
+  float: left;
+  clear: both;
+  background-color: rgba(49, 177, 49, 0.496);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.right {
+  float: right;
+  clear: both;
+  background-color: rgba(94, 148, 224, 0.66);
 }
