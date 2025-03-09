@@ -8,12 +8,30 @@ const app = express();
 app.use(cors());
 
 const myserver = createServer(app);
-const io = new socketio.Server(myserver);
+const io = new socketio.Server(myserver, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+        credentials: true
+    }
+});
 
 
-io.on('connection', () => {
-    console.log('user connected');
+io.on('connection', (cursocket) => {
+
+    console.log('New connection');
+
+    cursocket.on('message', (message) => {
+        cursocket.emit('message', message);
+        cursocket.broadcast.emit('message', message);
+    })
 })
+
+
+
+
+
+
 
 
 app.get('/', (req, res) => {

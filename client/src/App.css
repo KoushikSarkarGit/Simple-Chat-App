@@ -43,8 +43,10 @@ body {
 }
 
 .mitem {
-  padding: 4px;
+  padding: 5px 10px 5px 10px;
   border-radius: 5px;
+  margin-top: 1px;
+  margin-bottom: 5px;
 }
 
 .left {
