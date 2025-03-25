@@ -3,7 +3,7 @@ body {
 }
 
 #chat-container {
-  height: 72vh;
+  height: 68vh;
   margin-left: auto;
   margin-right: auto;
   width: 70vw;
@@ -11,6 +11,8 @@ body {
   border: 1px solid black;
   border-radius: 5px;
   background-color: white;
+  overflow-y: auto;
+  scrollbar-width: thin;
 
 }
 
@@ -23,9 +25,18 @@ body {
 }
 
 #message-input {
-  width: 92%;
+  width: 89%;
   padding: 10px;
   border-radius: 10px;
+
+}
+
+.roomcontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  width: 100%;
 }
 
 .sendbtn {
@@ -47,6 +58,8 @@ body {
   border-radius: 5px;
   margin-top: 1px;
   margin-bottom: 5px;
+  max-width: 80%;
+  word-break: break-all;
 }
 
 .left {
@@ -59,4 +72,11 @@ body {
   float: right;
   clear: both;
   background-color: rgba(94, 148, 224, 0.66);
+}
+
+#room-input {
+  width: 85%;
+  margin-bottom: 2px;
+  padding: 10px;
+  border-radius: 10px;
 }

@@ -19,13 +19,33 @@ const io = new socketio.Server(myserver, {
 
 io.on('connection', (cursocket) => {
 
-    console.log('New connection');
+    let croom = 'global';
 
-    cursocket.on('message', (message) => {
-        cursocket.emit('message', message);
-        cursocket.broadcast.emit('message', message);
+    cursocket.on('join-room', (data) => {
+        // cursocket.join(room);
+        // croom = room;;
+        console.log(`User ${cursocket.id} Joined room: ` + data.room);
+
+        // cursocket.emit(`User ${cursocket} Joined room: ` + room);
+    })
+
+    cursocket.on('message', (data) => {
+        console.log(data.message);
+        cursocket.emit('message', data);
+        cursocket.broadcast.emit('message', data);
+        // if (croom == 'global')
+        //     cursocket.emit('message', data);
+        // else
+        //     cursocket.to(croom).emit('message', data);
+    })
+
+    cursocket.on('disconnect', (room) => {
+        cursocket.emit('leave-room', `User ${cursocket.id} has left the room`);
+        cursocket.leave(room)
     })
 })
+
+
 
 
 
