@@ -2,9 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import { io } from 'socket.io-client';
 
+enum MessageType {
+  message = 'message',
+  info = 'info',
+
+}
 interface Message {
   message: string;
   socketid: string;
+  type: MessageType;
 }
 
 function App() {
@@ -47,6 +53,7 @@ function App() {
     socket.emit('message', {
       message: message,
       socketid: socket.id,
+      type: MessageType.message,
     });
     setMessage("");
   };
@@ -65,7 +72,8 @@ function App() {
 
 
     }
-    // setMessagelist([])
+    setMessagelist([])
+    setRoom('global');
     setRoomgiven(!roomgiven);
   };
 

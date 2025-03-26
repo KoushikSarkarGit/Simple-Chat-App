@@ -22,26 +22,33 @@ io.on('connection', (cursocket) => {
     let croom = 'global';
 
     cursocket.on('join-room', (data) => {
-        // cursocket.join(room);
-        // croom = room;;
+        cursocket.join(data.room);
+        croom = data.room;
         console.log(`User ${cursocket.id} Joined room: ` + data.room);
 
-        // cursocket.emit(`User ${cursocket} Joined room: ` + room);
+        cursocket.emit('join-room', `User ${cursocket.id} Joined room: ` + data.room);
+    })
+
+    cursocket.on('leave-room', (data) => {
+        cursocket.emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
+        cursocket.leave(data.room)
     })
 
     cursocket.on('message', (data) => {
         console.log(data.message);
         cursocket.emit('message', data);
-        cursocket.broadcast.emit('message', data);
-        // if (croom == 'global')
-        //     cursocket.emit('message', data);
-        // else
-        //     cursocket.to(croom).emit('message', data);
+        // cursocket.broadcast.emit('message', data);
+        if (croom == 'global') {
+            cursocket.emit('message', data);
+            cursocket.broadcast.emit('message', data);
+        } else {
+            cursocket.to(croom).emit('message', data);
+        }
     })
 
-    cursocket.on('disconnect', (room) => {
-        cursocket.emit('leave-room', `User ${cursocket.id} has left the room`);
-        cursocket.leave(room)
+    cursocket.on('disconnect', (data) => {
+        cursocket.emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
+        cursocket.leave(data.room)
     })
 })
 
