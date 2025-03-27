@@ -20,8 +20,10 @@ const io = new socketio.Server(myserver, {
 io.on('connection', (cursocket) => {
 
     let croom = 'global';
+    cursocket.join(croom);
 
     cursocket.on('join-room', (data) => {
+        cursocket.leave(croom)
         cursocket.join(data.room);
         croom = data.room;
         console.log(`User ${cursocket.id} Joined room: ` + data.room);
@@ -30,20 +32,17 @@ io.on('connection', (cursocket) => {
     })
 
     cursocket.on('leave-room', (data) => {
-        cursocket.emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
         cursocket.leave(data.room)
+        cursocket.join('global');
+        croom = 'global';
+        cursocket.emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
+
     })
 
     cursocket.on('message', (data) => {
         console.log(data.message);
         cursocket.emit('message', data);
-        // cursocket.broadcast.emit('message', data);
-        if (croom == 'global') {
-            cursocket.emit('message', data);
-            cursocket.broadcast.emit('message', data);
-        } else {
-            cursocket.to(croom).emit('message', data);
-        }
+        cursocket.to(croom).emit('message', data);
     })
 
     cursocket.on('disconnect', (data) => {
