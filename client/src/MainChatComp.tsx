@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import { io } from 'socket.io-client';
+import { format } from 'date-fns';
+
+
 
 enum MessageType {
     message = 'message',
@@ -11,6 +14,8 @@ interface Message {
     message: string;
     socketid: string;
     type: MessageType;
+    username: string;
+    time: string;
 }
 
 export default function MainChatComp(props: any) {
@@ -26,13 +31,25 @@ export default function MainChatComp(props: any) {
         return io('http://localhost:9000');
     }, []);
 
+
+    const getCurrentDateTime = () => {
+        const now = new Date();
+        return now.toLocaleString();
+        // return format(new Date(), 'PPpp');
+        // Or other formats:
+        // format(new Date(), 'PPpp'); // "Mar 29, 2024, 2:30 PM"
+        // format(new Date(), 'yyyy-MM-dd HH:mm:ss'); // "2024-03-29 14:30:45"
+    };
+
+
+
     useEffect(() => {
+
         socket.on('connect', () => {
             console.log(socket.id, 'connected');
         });
 
         socket.on('message', (data: Message) => {
-            console.log(data);
             setMessagelist((prev) => [...prev, data]);
         });
 
@@ -53,17 +70,22 @@ export default function MainChatComp(props: any) {
 
     const submitHandel = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log('socket', socket.id);
         socket.emit('message', {
             message: message,
             socketid: socket.id,
             type: MessageType.message,
+            username: props.username,
+            time: getCurrentDateTime()
         });
         setMessage("");
     };
 
     const roomHandel = (e: any) => {
         e.preventDefault();
-
+        if (room.trim() === '' || room.length < 1 || room.trim() === 'global') {
+            return;
+        }
         if (roomgiven) {
             socket.emit('leave-room', { room });
             setRoom('global');
@@ -80,13 +102,13 @@ export default function MainChatComp(props: any) {
         <>
             <div>
                 <header>
-                    <h1 className="text-center">Welcome to Simple Chat App</h1>
+                    <h2 className="text-center">Welcome to Simple Chat App</h2>
                 </header>
                 <main className="maincontainer">
                     <div id="chat-container">
                         <div className='center'>
                             <div className='details'>
-                                <div className='userdetails'>User: {props.username}  </div>
+                                <div className='userdetails'>User: {props.username} </div>
                                 <div className='roomdetails'>Chatting in room: {shownroom}  </div>
                             </div>
                         </div>
@@ -94,6 +116,18 @@ export default function MainChatComp(props: any) {
 
                         {messagelist.map((msg, index) => (
                             <div key={index} className={msg.socketid === socket.id ? "mitem right" : "mitem left"}>
+
+                                {msg.socketid !== socket.id ?
+
+                                    <div className='m-userdetails'>
+                                        <span >{msg.username}</span>
+                                        <span className='m-date' > {msg.time} </span>
+                                    </div>
+                                    :
+                                    <div className='m-userdetails'>
+                                        <span className='m-date' > {msg.time} </span>
+                                    </div>}
+
                                 {msg.message}
                             </div>
                         ))}

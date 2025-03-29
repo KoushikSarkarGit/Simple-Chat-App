@@ -16,7 +16,7 @@ function App() {
           <div className='form-container'>
 
             <div className='nameform'>
-              <h4 className='nameform__title'>Choose your name</h4>
+              <h2 className='nameform__title'>Choose your name</h2>
               <form className='nameform__form' onSubmit={(e) => {
                 e.preventDefault();
                 if (username.trim() !== '') {
@@ -32,7 +32,7 @@ function App() {
           </div>
 
           :
-          <MainChatComp username={username} />
+          <MainChatComp username={username || 'empty'} />
       }
 
 

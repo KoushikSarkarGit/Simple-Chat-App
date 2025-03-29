@@ -17,10 +17,10 @@ const io = new socketio.Server(myserver, {
 });
 
 
-io.on('connection', (cursocket) => {
+io.on('connection', async (cursocket) => {
 
     let croom = 'global';
-    cursocket.join(croom);
+    await cursocket.join(croom);
 
     cursocket.on('join-room', (data) => {
         cursocket.leave(croom)
