@@ -32,10 +32,11 @@ io.on('connection', async (cursocket) => {
     })
 
     cursocket.on('leave-room', (data) => {
+        cursocket.to(croom).emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
         cursocket.leave(data.room)
         cursocket.join('global');
         croom = 'global';
-        cursocket.emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
+        // cursocket.emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
 
     })
 

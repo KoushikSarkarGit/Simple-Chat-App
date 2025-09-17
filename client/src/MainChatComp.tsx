@@ -44,7 +44,11 @@ export default function MainChatComp(props: any) {
       console.log(msg);
     });
     socket.on("leave-room", (msg: any) => {
-      console.log(msg);
+      let chatcontainer = document.getElementById("chat-container");
+      let newnode = document.createElement("div");
+      newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${msg} </div> </div>`;
+
+      chatcontainer?.appendChild(newnode);
     });
 
     return () => {
