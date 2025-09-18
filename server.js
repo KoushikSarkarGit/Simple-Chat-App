@@ -28,11 +28,11 @@ io.on('connection', async (cursocket) => {
         croom = data.room;
         console.log(`User ${cursocket.id} Joined room: ` + data.room);
 
-        cursocket.emit('join-room', `User ${cursocket.id} Joined room: ` + data.room);
+        cursocket.to(croom).emit('join-room', `User ${data.username} with id ${cursocket.id} Joined room: ` + data.room);
     })
 
     cursocket.on('leave-room', (data) => {
-        cursocket.to(croom).emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
+        cursocket.to(croom).emit('leave-room', `User ${data.username} with id ${cursocket.id} has left the room: ${data.room}`);
         cursocket.leave(data.room)
         cursocket.join('global');
         croom = 'global';
@@ -47,7 +47,7 @@ io.on('connection', async (cursocket) => {
     })
 
     cursocket.on('disconnect', (data) => {
-        cursocket.emit('leave-room', `User ${cursocket.id} has left the room: ${data.room}`);
+        cursocket.emit('leave-room', `User ${data.username} with id ${cursocket.id} has left the room: ${data.room}`);
         cursocket.leave(data.room)
     })
 })

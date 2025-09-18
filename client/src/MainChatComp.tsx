@@ -20,6 +20,7 @@ export default function MainChatComp(props: any) {
 
   const [room, setRoom] = useState<string>("global");
   const [shownroom, setShownroom] = useState<string>(room);
+  const [username] = useState<string>(props.username || "");
   const [roomgiven, setRoomgiven] = useState<boolean>(false);
 
   const socket = useMemo(() => {
@@ -41,7 +42,11 @@ export default function MainChatComp(props: any) {
     });
 
     socket.on("join-room", (msg: any) => {
-      console.log(msg);
+      let chatcontainer = document.getElementById("chat-container");
+      let newnode = document.createElement("div");
+      newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${msg} </div> </div>`;
+
+      chatcontainer?.appendChild(newnode);
     });
     socket.on("leave-room", (msg: any) => {
       let chatcontainer = document.getElementById("chat-container");
@@ -78,11 +83,11 @@ export default function MainChatComp(props: any) {
       return;
     }
     if (roomgiven) {
-      socket.emit("leave-room", { room });
+      socket.emit("leave-room", { room: room, username: username });
       setRoom("global");
       setShownroom("global");
     } else {
-      socket.emit("join-room", { room: room });
+      socket.emit("join-room", { room: room, username: username });
       setShownroom(room);
     }
     setMessagelist([]);
