@@ -43,38 +43,17 @@ export default function MainChatComp(props: any) {
     });
 
     socket.on("join-room", (res: Message) => {
-      // let chatcontainer = document.getElementById("chat-container");
-      // let newnode;
-      // if (res.socketid == socket.id && res.data.room != "global") {
-      //   setMessagelist([]);
-      //   console.log("inside");
-      //   newnode = document.createElement("div");
-      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> You left room: ${res.data.room} </div> </div>`;
-      // } else {
-      //   newnode = document.createElement("div");
-      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${res.message} </div> </div>`;
-      // }
-
-      // chatcontainer?.appendChild(newnode);
-      setMessagelist([]);
+      if (res.socketid == socket.id) {
+        setMessagelist([]);
+      }
       setMessagelist((prev) => [...prev, res]);
     });
-    socket.on("leave-room", (res: Message) => {
-      // let chatcontainer = document.getElementById("chat-container");
-      // let newnode;
-      // if (res.socketid == socket.id && res.data.room != "global") {
-      //   setMessagelist([]);
-      //   console.log("inside");
-      //   newnode = document.createElement("div");
-      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> You left room: ${res.data.room} </div> </div>`;
-      // } else {
-      //   newnode = document.createElement("div");
-      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${res.message} </div> </div>`;
-      // }
 
-      // chatcontainer?.appendChild(newnode);
-      setMessagelist([]);
+    socket.on("leave-room", (res: Message) => {
       setMessagelist((prev) => [...prev, res]);
+      if (res.socketid == socket.id) {
+        setMessagelist([]);
+      }
     });
 
     return () => {
