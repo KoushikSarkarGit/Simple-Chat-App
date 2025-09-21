@@ -12,6 +12,7 @@ interface Message {
   type: MessageType;
   username: string;
   time: string;
+  room: string;
 }
 
 export default function MainChatComp(props: any) {
@@ -37,23 +38,43 @@ export default function MainChatComp(props: any) {
       console.log(socket.id, "connected");
     });
 
-    socket.on("message", (data: Message) => {
-      setMessagelist((prev) => [...prev, data]);
+    socket.on("message", (res: Message) => {
+      setMessagelist((prev) => [...prev, res]);
     });
 
-    socket.on("join-room", (msg: any) => {
-      let chatcontainer = document.getElementById("chat-container");
-      let newnode = document.createElement("div");
-      newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${msg} </div> </div>`;
+    socket.on("join-room", (res: Message) => {
+      // let chatcontainer = document.getElementById("chat-container");
+      // let newnode;
+      // if (res.socketid == socket.id && res.data.room != "global") {
+      //   setMessagelist([]);
+      //   console.log("inside");
+      //   newnode = document.createElement("div");
+      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> You left room: ${res.data.room} </div> </div>`;
+      // } else {
+      //   newnode = document.createElement("div");
+      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${res.message} </div> </div>`;
+      // }
 
-      chatcontainer?.appendChild(newnode);
+      // chatcontainer?.appendChild(newnode);
+      setMessagelist([]);
+      setMessagelist((prev) => [...prev, res]);
     });
-    socket.on("leave-room", (msg: any) => {
-      let chatcontainer = document.getElementById("chat-container");
-      let newnode = document.createElement("div");
-      newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${msg} </div> </div>`;
+    socket.on("leave-room", (res: Message) => {
+      // let chatcontainer = document.getElementById("chat-container");
+      // let newnode;
+      // if (res.socketid == socket.id && res.data.room != "global") {
+      //   setMessagelist([]);
+      //   console.log("inside");
+      //   newnode = document.createElement("div");
+      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> You left room: ${res.data.room} </div> </div>`;
+      // } else {
+      //   newnode = document.createElement("div");
+      //   newnode.innerHTML = `<div class="noti" > <div class="innernoti"> ${res.message} </div> </div>`;
+      // }
 
-      chatcontainer?.appendChild(newnode);
+      // chatcontainer?.appendChild(newnode);
+      setMessagelist([]);
+      setMessagelist((prev) => [...prev, res]);
     });
 
     return () => {
@@ -73,6 +94,7 @@ export default function MainChatComp(props: any) {
       type: MessageType.message,
       username: props.username,
       time: getCurrentDateTime(),
+      room: room,
     });
     setMessage("");
   };
@@ -83,14 +105,29 @@ export default function MainChatComp(props: any) {
       return;
     }
     if (roomgiven) {
-      socket.emit("leave-room", { room: room, username: username });
+      socket.emit("leave-room", {
+        message: "",
+        socketid: socket.id,
+        type: MessageType.info,
+        username: username,
+        time: getCurrentDateTime(),
+        room: room,
+      });
+
       setRoom("global");
       setShownroom("global");
     } else {
-      socket.emit("join-room", { room: room, username: username });
+      socket.emit("join-room", {
+        message: "",
+        socketid: socket.id,
+        type: MessageType.info,
+        username: username,
+        time: getCurrentDateTime(),
+        room: room,
+      });
       setShownroom(room);
     }
-    setMessagelist([]);
+    // setMessagelist([]);
     setRoomgiven(!roomgiven);
   };
 
@@ -111,27 +148,45 @@ export default function MainChatComp(props: any) {
               </div>
             </div>
 
-            {messagelist.map((msg, index) => (
-              <div
-                key={index}
-                className={
-                  msg.socketid === socket.id ? "mitem right" : "mitem left"
-                }
-              >
-                {msg.socketid !== socket.id ? (
-                  <div className="m-userdetails">
-                    <span>{msg.username}</span>
-                    <span className="m-date"> {msg.time} </span>
-                  </div>
-                ) : (
-                  <div className="m-userdetails">
-                    <span className="m-date"> {msg.time} </span>
-                  </div>
-                )}
+            {messagelist.map((msg: Message, index) =>
+              msg.type == "message" ? (
+                <div
+                  key={index}
+                  className={
+                    msg.socketid === socket.id ? "mitem right" : "mitem left"
+                  }
+                >
+                  {msg.socketid !== socket.id ? (
+                    <div className="m-userdetails">
+                      <span>{msg.username}</span>
+                      <span className="m-date"> {msg.time} </span>
+                    </div>
+                  ) : (
+                    <div className="m-userdetails">
+                      <span>You</span>
+                      <span className="m-date"> {msg.time} </span>
+                    </div>
+                  )}
 
-                {msg.message}
-              </div>
-            ))}
+                  {msg.message}
+                </div>
+              ) : (
+                <div key={index} className="noti">
+                  {/* {msg.socketid !== socket.id ? (
+                    <div className="m-userdetails">
+                      <span>{msg.username}</span>
+                      <span className="m-date"> {msg.time} </span>
+                    </div>
+                  ) : (
+                    <div className="m-userdetails">
+                      <span>You</span>
+                      <span className="m-date"> {msg.time} </span>
+                    </div>
+                  )} */}
+                  <div className="innernoti">{msg.message}</div>
+                </div>
+              )
+            )}
           </div>
           <form id="chat-form" onSubmit={submitHandel}>
             <div className="roomcontainer">
