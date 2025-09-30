@@ -46,6 +46,7 @@ export default function MainChatComp(props: any) {
       if (res.socketid == socket.id) {
         setMessagelist([]);
       }
+
       setMessagelist((prev) => [...prev, res]);
     });
 
@@ -66,7 +67,7 @@ export default function MainChatComp(props: any) {
 
   const submitHandel = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("socket", socket.id);
+    // console.log("socket", socket.id);
     socket.emit("message", {
       message: message,
       socketid: socket.id,
@@ -112,18 +113,18 @@ export default function MainChatComp(props: any) {
 
   return (
     <>
-      <div>
-        <header>
-          <h2 className="text-center">Welcome to Simple Chat App</h2>
+      <div className="rootcomponent">
+        <header className="appheader">
+          <span className="text-center appheadertext">
+            Welcome to Simply Chat
+          </span>
         </header>
         <main className="maincontainer">
           <div id="chat-container">
-            <div className="center">
+            <div className="center sticky">
               <div className="details">
-                <div className="userdetails">User: {props.username} </div>
-                <div className="roomdetails">
-                  Chatting in room: {shownroom}{" "}
-                </div>
+                <div className="userdetails">Username: {props.username} </div>
+                <div className="roomdetails">Room: {shownroom} </div>
               </div>
             </div>
 
@@ -151,17 +152,6 @@ export default function MainChatComp(props: any) {
                 </div>
               ) : (
                 <div key={index} className="noti">
-                  {/* {msg.socketid !== socket.id ? (
-                    <div className="m-userdetails">
-                      <span>{msg.username}</span>
-                      <span className="m-date"> {msg.time} </span>
-                    </div>
-                  ) : (
-                    <div className="m-userdetails">
-                      <span>You</span>
-                      <span className="m-date"> {msg.time} </span>
-                    </div>
-                  )} */}
                   <div className="innernoti">{msg.message}</div>
                 </div>
               )

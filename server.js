@@ -32,6 +32,14 @@ io.on("connection", async (cursocket) => {
       time: req.time,
       room: req.room,
     });
+    cursocket.emit("join-room", {
+      message: `You joined the room: ${req.room}`,
+      socketid: cursocket.id,
+      type: "info",
+      username: req.username,
+      time: req.time,
+      room: req.room,
+    });
   });
 
   //leave room handler
