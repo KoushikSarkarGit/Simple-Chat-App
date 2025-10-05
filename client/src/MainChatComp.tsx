@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { io } from "socket.io-client";
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL =
+  import.meta.env.VITE_BASE_URL || "https://simple-chat-app-3o6b.onrender.com";
 enum MessageType {
   message = "message",
   info = "info",
