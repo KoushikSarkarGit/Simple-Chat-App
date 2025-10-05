@@ -9,18 +9,15 @@ function App() {
     <>
       {!namegiven ? (
         <div>
-          <header className="appheader">
-            <span className="text-center appheadertext">
-              Welcome to Simply Chat
-            </span>
-            <div>
-              <span>Anonymous | Secure | Forgettable</span>
-            </div>
-          </header>
-
           <div className="form-container">
             <div className="nameform">
-              <h2 className="nameform__title">Choose your name</h2>
+              <header className="appheader">
+                <h1 className="text-center ">Welcome to Simply Chat</h1>
+                <div>
+                  <span>Anonymous | Secure | Forgettable</span>
+                </div>
+              </header>
+              <p>Enter your username to join</p>
               <form
                 className="nameform__form"
                 onSubmit={(e) => {
@@ -33,12 +30,12 @@ function App() {
               >
                 <input
                   type="text"
-                  maxLength={30}
+                  maxLength={20}
                   className="nameform__input"
                   placeholder="Enter your name"
                   onChange={(e) => setUsername(e.target.value)}
                 />
-                <button type="submit" className="sendbtn">
+                <button type="submit" className="">
                   Submit
                 </button>
               </form>

@@ -30,7 +30,10 @@ export default function MainChatComp(props: any) {
 
   const getCurrentDateTime = () => {
     const now = new Date();
-    return now.toLocaleString();
+    return now.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   useEffect(() => {
@@ -114,11 +117,11 @@ export default function MainChatComp(props: any) {
   return (
     <>
       <div className="rootcomponent">
-        <header className="appheader">
+        {/* <header className="appheader">
           <span className="text-center appheadertext">
             Welcome to Simply Chat
           </span>
-        </header>
+        </header> */}
         <main className="maincontainer">
           <div id="chat-container">
             <div className="center sticky">

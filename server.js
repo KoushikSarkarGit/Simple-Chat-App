@@ -15,6 +15,14 @@ const io = new socketio.Server(myserver, {
   },
 });
 
+//deployment code
+
+// app.use(express.static(path.join(__dirname, "./client/build")));
+
+// app.use("*", function (req, res) {
+//   res.sendFile(path.join(__dirname, "./client/build/index.html"));
+// });
+
 io.on("connection", async (cursocket) => {
   let croom = "global";
   await cursocket.join(croom);
