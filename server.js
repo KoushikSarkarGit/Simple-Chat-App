@@ -17,11 +17,11 @@ const io = new socketio.Server(myserver, {
 
 //deployment code
 
-// app.use(express.static(path.join(__dirname, "./client/build")));
+app.use(express.static(path.join(__dirname, "./client/dist")));
 
-// app.use("*", function (req, res) {
-//   res.sendFile(path.join(__dirname, "./client/build/index.html"));
-// });
+app.use("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/dist/index.html"));
+});
 
 io.on("connection", async (cursocket) => {
   let croom = "global";

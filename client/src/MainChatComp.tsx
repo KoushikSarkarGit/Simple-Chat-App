@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { io } from "socket.io-client";
-
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 enum MessageType {
   message = "message",
   info = "info",
@@ -25,7 +25,7 @@ export default function MainChatComp(props: any) {
   const [roomgiven, setRoomgiven] = useState<boolean>(false);
 
   const socket = useMemo(() => {
-    return io("http://localhost:9000");
+    return io(`${BASE_URL}`);
   }, []);
 
   const getCurrentDateTime = () => {
